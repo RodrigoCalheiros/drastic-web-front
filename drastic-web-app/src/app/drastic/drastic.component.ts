@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import Map from 'ol/Map';
 import View from 'ol/View';
 import VectorLayer from 'ol/layer/Vector';
@@ -9,6 +11,8 @@ import TileLayer from 'ol/layer/Tile';
 import GeoJSON from 'ol/format/GeoJSON';
 import { Circle as CircleStyle, Fill, Stroke, Style } from 'ol/style';
 
+import { DrasticDService } from '../drastic-d.service';
+
 @Component({
   selector: 'app-drastic',
   templateUrl: './drastic.component.html',
@@ -16,61 +20,79 @@ import { Circle as CircleStyle, Fill, Stroke, Style } from 'ol/style';
 })
 export class DrasticComponent implements OnInit {
 
+  SERVER_URL = "http://127.0.0.1:5000/drastic/d/mdt";
+  uploadForm!: FormGroup;
+  dForm!: FormGroup;
+  maxDepthControl = new FormControl(20);
+  distanceControl = new FormControl(200);
+  minSizeControl = new FormControl(50);
+
+  drasticDService!: DrasticDService;
   map!: Map;
 
-  geojson = {
-    "type": "FeatureCollection",
-    "name": "pontos",
-    "crs": { 
-      "type": "name",
-      "properties": { 
-        "name": "urn:ogc:def:crs:OGC:1.3:CRS84" 
-      } 
-    },
-    "features": [
-      { "type": "Feature", "properties": { "Name": "0", "description": null, "altitudeMode": "clampToGround", "Id": "0", "FID": "0", "Field_1": "0" }, "geometry": { "type": "Point", "coordinates": [ -53.089368615620558, -0.359176235286933 ] } },
-      { "type": "Feature", "properties": { "Name": "0", "description": null, "altitudeMode": "clampToGround", "Id": "0", "FID": "1", "Field_1": "0" }, "geometry": { "type": "Point", "coordinates": [ -48.235268163726779, -2.500691140534186 ] } },
-      { "type": "Feature", "properties": { "Name": "0", "description": null, "altitudeMode": "clampToGround", "Id": "0", "FID": "2", "Field_1": "0" }, "geometry": { "type": "Point", "coordinates": [ -52.518297974221291, -4.64220604578144 ] } }
-    ]
-  };
-
-  circle = new CircleStyle({
-    radius: 5,
-    stroke: new Stroke({color: 'red', width: 1})
-  });
-
-  styles = {
-    'Point': new Style({
-      image: this.circle,
-    })
+  constructor(
+    private formBuilder: FormBuilder,
+    private httpClient: HttpClient
+  ){
+    this.uploadForm = this.formBuilder.group({
+      mdtFile: ['']
+    });
+    this.dForm = this.formBuilder.group({
+      maxDepth: this.maxDepthControl,
+      distance: this.distanceControl,
+      minSize: this.minSizeControl
+    });
   }
 
-  vectorSource = new VectorSource({
-    features: new GeoJSON().readFeatures(this.geojson, { featureProjection: 'EPSG:3857' }),
-  });
-
-  vectorLayer = new VectorLayer({
-    source: this.vectorSource,
-    style: new Style({
-      image: this.circle,
-    })
-  })
-
-  constructor() { }
-
   ngOnInit(): void {
+    this.loadMap();
+  }
+
+  loadMap(){
     this.map = new Map({
       target: 'map',
       layers: [
         new TileLayer({
           source: new OSM()
-        }), this.vectorLayer
+        })
       ],
       view: new View({
         center: olProj.fromLonLat([-46,-2]),
         zoom: 5
       })
     });
+  }
+
+  onFileSelect(event:any){
+    if (event.target.files.length > 0){
+      const file = event.target.files[0];
+      this.uploadForm.get('mdtFile')?.setValue(file);
+    }
+  }
+
+  uploadFile() {
+    const formData = new FormData();
+    formData.append('file', this.uploadForm.get('mdtFile')?.value);
+    let options = {
+      headers: new HttpHeaders()
+          .set('Access-Control-Allow-Origin', 'http://127.0.0.1:5000'),
+      file: this.uploadForm.get('mdtFile')?.value
+
+    }
+    this.httpClient.post<any>(this.SERVER_URL, formData).subscribe(
+      (res) => console.log(res),
+      (err) => console.log(err)
+    );
+  }
+
+  calculateD(){
+    console.log("log");
+    const formData = new FormData();
+    formData.append('data', this.dForm.value);
+    this.httpClient.post<any>("http://127.0.0.1:5000/drastic/d", formData).subscribe(
+      (res) => console.log(res),
+      (err) => console.log(err)
+    );
   }
 
 }

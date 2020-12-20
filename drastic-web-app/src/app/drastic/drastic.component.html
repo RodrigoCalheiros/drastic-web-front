@@ -1,1 +1,138 @@
 <div id="map"></div>
+<div class="panelIndices">
+    <mat-expansion-panel hideToggle>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                Drastic
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <mat-expansion-panel hideToggle>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                D
+                </mat-panel-title>
+                <mat-panel-description>
+                    Depth to Groundwather
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+                <form [formGroup]="uploadForm" (ngSubmit)="uploadFile()">
+
+                    <div>
+                        <mat-label>MDT File</mat-label>
+                        <input type="file" name="mdtFile" (change)="onFileSelect($event)">
+                    </div>
+                    <div>
+                        <button class="button" type="submit">OK</button>
+                    </div>
+
+                </form>
+
+                <br>
+
+                <form [formGroup]="dForm" (ngSubmit)="calculateD()">
+
+                    <label>Maximum depth</label>
+                    <input  [formControl]="maxDepthControl">
+
+                    <br>
+                    
+                    <label>Distance</label>
+                    <input  [formControl]="distanceControl">
+
+                    <br>
+                 
+                    <label>Minimum size of watershed basin</label>
+                    <input  [formControl]="minSizeControl">
+
+                    <br>
+                    <button class="button" type="submit">OK</button>
+
+                </form>
+                
+               
+        </mat-expansion-panel>
+
+        <mat-expansion-panel hideToggle>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                R
+                </mat-panel-title>
+                <mat-panel-description>
+                    Net Recharge
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+            <p>This is the primary content of the panel.</p>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel hideToggle>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                A
+                </mat-panel-title>
+                <mat-panel-description>
+                    Aquifer Media
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+            <p>This is the primary content of the panel.</p>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel hideToggle>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                S
+                </mat-panel-title>
+                <mat-panel-description>
+                    Soil Media
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+            <p>This is the primary content of the panel.</p>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel hideToggle>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                T
+                </mat-panel-title>
+                <mat-panel-description>
+                    Topography
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+            <p>This is the primary content of the panel.</p>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel hideToggle>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                I
+                </mat-panel-title>
+                <mat-panel-description>
+                    Impact of The Vadose Zone
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+            <p>This is the primary content of the panel.</p>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel hideToggle>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                C
+                </mat-panel-title>
+                <mat-panel-description>
+                    Hydraulic Conductivity
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+            <p>This is the primary content of the panel.</p>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel hideToggle>
+            <mat-expansion-panel-header>
+                <mat-panel-description>
+                    DRASTIC
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+            <p>This is the primary content of the panel.</p>
+        </mat-expansion-panel>
+
+    </mat-expansion-panel>
+</div>
