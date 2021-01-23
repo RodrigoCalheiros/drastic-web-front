@@ -12,6 +12,7 @@ import GeoJSON from 'ol/format/GeoJSON';
 import { Circle as CircleStyle, Fill, Stroke, Style } from 'ol/style';
 
 import { DrasticDService } from '../drastic-d.service';
+import TileWMS from 'ol/source/TileWMS';
 
 @Component({
   selector: 'app-drastic',
@@ -49,12 +50,29 @@ export class DrasticComponent implements OnInit {
   }
 
   loadMap(){
+    var wms = new TileLayer({
+      visible: true,
+      zIndex: 10,
+      source: new TileWMS({
+        url: 'http://localhost/cgi-bin/mapserv',
+        params: {
+          'srs': 'EPSG:3857',
+          'LAYERS': 'd', 
+          'TILED': true, 
+          'MAP':'/var/www/mapserv/drastic2.map'
+        },
+        serverType: 'mapserver',
+        crossOrigin: "anonymous"
+      }),
+    }) 
+
     this.map = new Map({
       target: 'map',
       layers: [
         new TileLayer({
           source: new OSM()
-        })
+        }),
+        wms
       ],
       view: new View({
         center: olProj.fromLonLat([-46,-2]),
