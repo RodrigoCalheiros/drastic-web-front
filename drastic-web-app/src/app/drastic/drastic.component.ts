@@ -21,8 +21,6 @@ import TileWMS from 'ol/source/TileWMS';
 })
 export class DrasticComponent implements OnInit {
 
-  SERVER_URL = "http://127.0.0.1:5000/drastic/d/mdt";
-
   dForm_upload = new FormControl('');
   uploadForm: FormGroup = this.formBuilder.group({
     mdtFile: this.dForm_upload
@@ -104,7 +102,7 @@ export class DrasticComponent implements OnInit {
       file: this.uploadForm.get('mdtFile')?.value
 
     }
-    this.httpClient.post<any>(this.SERVER_URL, formData).subscribe(
+    this.httpClient.post<any>("http://127.0.0.1:5000/drastic/upload", formData).subscribe(
       (res) => console.log(res),
       (err) => console.log(err)
     );
