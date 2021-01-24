@@ -22,11 +22,26 @@ import TileWMS from 'ol/source/TileWMS';
 export class DrasticComponent implements OnInit {
 
   SERVER_URL = "http://127.0.0.1:5000/drastic/d/mdt";
-  uploadForm!: FormGroup;
-  dForm!: FormGroup;
-  maxDepthControl = new FormControl(20);
-  distanceControl = new FormControl(200);
-  minSizeControl = new FormControl(50);
+
+  dForm_upload = new FormControl('');
+  uploadForm: FormGroup = this.formBuilder.group({
+    mdtFile: this.dForm_upload
+  });
+
+  dForm_maxDepth = new FormControl(20);
+  dForm_distance = new FormControl(200);
+  dForm_minSize = new FormControl(50);
+
+  dForm: FormGroup = this.formBuilder.group({
+    maxDepth: this.dForm_maxDepth,
+    distance: this.dForm_distance,
+    minSize: this.dForm_minSize
+  });
+
+  rForm_rattings = new FormControl(50);
+  rForm: FormGroup = this.formBuilder.group({
+    rattings: this.rForm_rattings,
+  });
 
   drasticDService!: DrasticDService;
   map!: Map;
@@ -35,14 +50,6 @@ export class DrasticComponent implements OnInit {
     private formBuilder: FormBuilder,
     private httpClient: HttpClient
   ){
-    this.uploadForm = this.formBuilder.group({
-      mdtFile: ['']
-    });
-    this.dForm = this.formBuilder.group({
-      maxDepth: this.maxDepthControl,
-      distance: this.distanceControl,
-      minSize: this.minSizeControl
-    });
   }
 
   ngOnInit(): void {
@@ -57,7 +64,7 @@ export class DrasticComponent implements OnInit {
         url: 'http://localhost/cgi-bin/mapserv',
         params: {
           'srs': 'EPSG:3857',
-          'LAYERS': 'd', 
+          'LAYERS': 'r', 
           'TILED': true, 
           'MAP':'/var/www/mapserv/drastic2.map'
         },
@@ -75,8 +82,8 @@ export class DrasticComponent implements OnInit {
         wms
       ],
       view: new View({
-        center: olProj.fromLonLat([-46,-2]),
-        zoom: 5
+        center: olProj.fromLonLat([-7.5,40.3]),
+        zoom: 10
       })
     });
   }
@@ -84,7 +91,8 @@ export class DrasticComponent implements OnInit {
   onFileSelect(event:any){
     if (event.target.files.length > 0){
       const file = event.target.files[0];
-      this.uploadForm.get('mdtFile')?.setValue(file);
+      this.dForm_upload.setValue(file);
+      //this.uploadForm.get('mdtFile')?.setValue(file);
     }
   }
 
@@ -92,8 +100,7 @@ export class DrasticComponent implements OnInit {
     const formData = new FormData();
     formData.append('file', this.uploadForm.get('mdtFile')?.value);
     let options = {
-      headers: new HttpHeaders()
-          .set('Access-Control-Allow-Origin', 'http://127.0.0.1:5000'),
+      headers: new HttpHeaders().set('Access-Control-Allow-Origin', 'http://127.0.0.1:5000'),
       file: this.uploadForm.get('mdtFile')?.value
 
     }
@@ -104,10 +111,19 @@ export class DrasticComponent implements OnInit {
   }
 
   calculateD(){
-    console.log("log");
     const formData = new FormData();
-    formData.append('data', this.dForm.value);
-    this.httpClient.post<any>("http://127.0.0.1:5000/drastic/d", formData).subscribe(
+    formData.append('data', JSON.stringify(this.dForm.value));
+    console.log(formData.get("data"));
+    this.httpClient.post<any>("http://127.0.0.1:5000/drastic/d/calculate", formData).subscribe(
+      (res) => console.log(res),
+      (err) => console.log(err)
+    );
+  }
+
+  calculateR(){
+    const formData = new FormData();
+    formData.append('data', JSON.stringify(this.rForm.value));
+    this.httpClient.post<any>("http://127.0.0.1:5000/drastic/r/calculate",  formData).subscribe(
       (res) => console.log(res),
       (err) => console.log(err)
     );

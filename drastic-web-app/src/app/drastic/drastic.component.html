@@ -16,41 +16,29 @@
                     Depth to Groundwather
                 </mat-panel-description>
             </mat-expansion-panel-header>
-                <form [formGroup]="uploadForm" (ngSubmit)="uploadFile()">
-
-                    <div>
-                        <mat-label>MDT File</mat-label>
-                        <input type="file" name="mdtFile" (change)="onFileSelect($event)">
-                    </div>
-                    <div>
-                        <button class="button" type="submit">OK</button>
-                    </div>
-
-                </form>
-
-                <br>
-
-                <form [formGroup]="dForm" (ngSubmit)="calculateD()">
-
+            <form [formGroup]="uploadForm" (ngSubmit)="uploadFile()">
+                <div class="full-width">
+                    <label>MDT File</label>
+                    <input type="file"  (change)="onFileSelect($event)">
+                </div>
+                <button class="button" type="submit">OK</button>
+            </form>
+            <br>
+            <form [formGroup]="dForm" (ngSubmit)="calculateD()">
+                <mat-form-field class="full-width">
                     <label>Maximum depth</label>
-                    <input  [formControl]="maxDepthControl">
-
-                    <br>
-                    
+                    <input matInput [formControl]="dForm_maxDepth">
+                </mat-form-field>
+                <mat-form-field class="full-width">
                     <label>Distance</label>
-                    <input  [formControl]="distanceControl">
-
-                    <br>
-                 
-                    <label>Minimum size of watershed basin</label>
-                    <input  [formControl]="minSizeControl">
-
-                    <br>
-                    <button class="button" type="submit">OK</button>
-
-                </form>
-                
-               
+                    <input matInput [formControl]="dForm_distance">
+                </mat-form-field>
+                <mat-form-field class="full-width">
+                    <label >Minimum size of watershed basin</label>
+                    <input matInput [formControl]="dForm_minSize">
+                </mat-form-field>       
+                <button class="button" type="submit">OK</button>
+            </form>
         </mat-expansion-panel>
 
         <mat-expansion-panel hideToggle>
@@ -62,7 +50,21 @@
                     Net Recharge
                 </mat-panel-description>
             </mat-expansion-panel-header>
-            <p>This is the primary content of the panel.</p>
+            <form [formGroup]="uploadForm" (ngSubmit)="uploadFile()">
+                <div class="full-width">
+                    <label>MDT File</label>
+                    <input type="file"  (change)="onFileSelect($event)">
+                </div>
+                <button class="button" type="submit">OK</button>
+            </form>
+            <br>
+            <form [formGroup]="rForm" (ngSubmit)="calculateR()">
+                <mat-form-field class="full-width">
+                    <label>Rattings</label>
+                    <input matInput [formControl]="rForm_rattings">
+                </mat-form-field>      
+                <button class="button" type="submit">OK</button>
+            </form>
         </mat-expansion-panel>
 
         <mat-expansion-panel hideToggle>
