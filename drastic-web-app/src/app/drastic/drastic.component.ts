@@ -41,6 +41,8 @@ export class DrasticComponent implements OnInit {
     rattings: this.rForm_rattings,
   });
 
+  aHeaders: String[] = [];
+
   drasticDService!: DrasticDService;
   map!: Map;
 
@@ -123,6 +125,17 @@ export class DrasticComponent implements OnInit {
     formData.append('data', JSON.stringify(this.rForm.value));
     this.httpClient.post<any>("http://127.0.0.1:5000/drastic/r/calculate",  formData).subscribe(
       (res) => console.log(res),
+      (err) => console.log(err)
+    );
+  }
+
+  getHeaderShpA(){
+    const formData = new FormData();
+    this.httpClient.get<any>("http://127.0.0.1:5000/drastic/shp/header/a").subscribe(
+      (res) => {
+        console.log(res)
+        this.aHeaders = res.data
+      },
       (err) => console.log(err)
     );
   }

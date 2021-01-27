@@ -13,7 +13,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { HttpClientModule } from '@angular/common/http';
-
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
   declarations: [
@@ -32,6 +32,7 @@ import { HttpClientModule } from '@angular/common/http';
     MatButtonModule,
     MatProgressBarModule,
     HttpClientModule,
+    MatSelectModule
   ],
   providers: [{provide:MatFormFieldControl, useExisting: AppModule}],
   bootstrap: [AppComponent]

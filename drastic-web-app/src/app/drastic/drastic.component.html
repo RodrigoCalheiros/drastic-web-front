@@ -76,7 +76,17 @@
                     Aquifer Media
                 </mat-panel-description>
             </mat-expansion-panel-header>
-            <p>This is the primary content of the panel.</p>
+            <form >
+            <button class="button" (click)="getHeaderShpA()">OK</button>
+            <mat-form-field appearance="fill">
+                <mat-label>Fields</mat-label>
+                <mat-select>
+                  <mat-option *ngFor="let aHeader of aHeaders" [value]="aHeader">
+                    {{aHeader}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </form>
         </mat-expansion-panel>
 
         <mat-expansion-panel hideToggle>
