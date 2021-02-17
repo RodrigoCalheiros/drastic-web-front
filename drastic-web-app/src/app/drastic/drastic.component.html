@@ -76,16 +76,53 @@
                     Aquifer Media
                 </mat-panel-description>
             </mat-expansion-panel-header>
-            <form >
-            <button class="button" (click)="getHeaderShpA()">OK</button>
-            <mat-form-field appearance="fill">
-                <mat-label>Fields</mat-label>
-                <mat-select>
-                  <mat-option *ngFor="let aHeader of aHeaders" [value]="aHeader">
-                    {{aHeader}}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
+            <form [formGroup]="aForm" (ngSubmit)="calculateA()">
+                <button class="button" (click)="getHeaderShpA()">Header</button>
+                <button class="button" (click)="getValueShpA()">values</button>
+                <mat-form-field appearance="fill">
+                    <mat-label>Fields</mat-label>
+                    <mat-select [formControl]="aForm_header">
+                    <mat-option   *ngFor="let aHeader of aHeaders" [value]="aHeader">
+                        {{aHeader}}
+                    </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="fill">
+                    <mat-label>Values</mat-label>
+                    <mat-select>
+                    <mat-option [formControl]="aForm_class" *ngFor="let aValue of aValues" [value]="aValue">
+                        {{aValue}}
+                    </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field class="full-width">
+                    <label>Weight</label>
+                    <input matInput [formControl]="aForm_weight">
+                </mat-form-field>     
+                <button class="button" (click)="addARattings()">Adicionar Rattings</button> 
+
+                <table mat-table [dataSource]="aRatings" class="mat-elevation-z8">
+
+                <!--- Note that these columns can be defined in any order.
+                        The actual rendered columns are set as a property on the row definition" -->
+                
+                <!-- Position Column -->
+                <ng-container matColumnDef="class">
+                    <th mat-header-cell *matHeaderCellDef> Classe </th>
+                    <td mat-cell *matCellDef="let element"> {{element.class}} </td>
+                </ng-container>
+                
+                <!-- Name Column -->
+                <ng-container matColumnDef="value">
+                    <th mat-header-cell *matHeaderCellDef> Value </th>
+                    <td mat-cell *matCellDef="let element"> {{element.value}} </td>
+                </ng-container>
+                
+                
+                </table>
+                  
+                  
+                <button class="button" type="submit">OK</button>
             </form>
         </mat-expansion-panel>
 

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import Map from 'ol/Map';
 import View from 'ol/View';
 import VectorLayer from 'ol/layer/Vector';
@@ -29,7 +29,6 @@ export class DrasticComponent implements OnInit {
   dForm_maxDepth = new FormControl(20);
   dForm_distance = new FormControl(200);
   dForm_minSize = new FormControl(50);
-
   dForm: FormGroup = this.formBuilder.group({
     maxDepth: this.dForm_maxDepth,
     distance: this.dForm_distance,
@@ -42,6 +41,16 @@ export class DrasticComponent implements OnInit {
   });
 
   aHeaders: String[] = [];
+  aValues: String[] = [];
+  aRatings: any[] = [];
+  aForm_header = new FormControl(null);
+  aForm_class = new FormControl(null);
+  aForm_weight = new FormControl(0);
+  aForm: FormGroup = this.formBuilder.group({
+    header: this.aForm_header,
+    class: this.aForm_class,
+    weight: this.aForm_weight
+  });
 
   drasticDService!: DrasticDService;
   map!: Map;
@@ -54,6 +63,7 @@ export class DrasticComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadMap();
+    this.getHeaderShpA();
   }
 
   loadMap(){
@@ -64,7 +74,7 @@ export class DrasticComponent implements OnInit {
         url: 'http://localhost/cgi-bin/mapserv',
         params: {
           'srs': 'EPSG:3857',
-          'LAYERS': 'r', 
+          'LAYERS': 'd', 
           'TILED': true, 
           'MAP':'/var/www/mapserv/drastic2.map'
         },
@@ -139,5 +149,30 @@ export class DrasticComponent implements OnInit {
       (err) => console.log(err)
     );
   }
+
+  getValueShpA(){
+    const opts = { params: new HttpParams({fromString: "field=" + this.aForm_header.value}) };
+    this.httpClient.get<any>("http://127.0.0.1:5000/drastic/shp/value/a", opts).subscribe(
+      (res) => {
+        console.log(res)
+        this.aValues = res.data
+      },
+      (err) => console.log(err)
+    );
+  }
+
+  clearARattings(){
+    this.aRatings = [];
+  }
+
+  addARattings(){
+    let ratting = {
+      class: this.aForm.get('header'),
+      value: this.aForm.get('value')
+    };
+    this.aRatings.push(ratting);
+  }
+
+ 
 
 }
