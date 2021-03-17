@@ -19,4 +19,18 @@
 .full-width{
     width: 100%;
 }
-  
+
+.ol-zoom{
+    display: none!important;
+}
+
+.rotate-north{
+    z-index: 100;
+    right: 10px;
+    top: 10px;
+}
+
+.button{
+    margin-top: 3px;
+    margin-bottom: 10px;
+}

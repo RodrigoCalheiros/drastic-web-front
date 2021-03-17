@@ -14,6 +14,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { HttpClientModule } from '@angular/common/http';
 import { MatSelectModule } from '@angular/material/select';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatTableModule } from '@angular/material/table';
 
 @NgModule({
   declarations: [
@@ -32,7 +34,9 @@ import { MatSelectModule } from '@angular/material/select';
     MatButtonModule,
     MatProgressBarModule,
     HttpClientModule,
-    MatSelectModule
+    MatSelectModule,
+    MatSlideToggleModule,
+    MatTableModule
   ],
   providers: [{provide:MatFormFieldControl, useExisting: AppModule}],
   bootstrap: [AppComponent]
