@@ -90,8 +90,7 @@
             </form>
             
             <form [formGroup]="aForm" (ngSubmit)="calculateA()">
-                <!-- <button class="button" (click)="getHeaderShpA()">Header</button>
-                <button class="button" (click)="getValueShpA()">values</button> -->
+
                 <mat-form-field appearance="fill">
                     <mat-label>Attribute</mat-label>
                     <mat-select [formControl]="aForm_header" #attribute (selectionChange)="changeHeaderShpA(attribute.value)">
@@ -101,7 +100,7 @@
                     </mat-select>
                 </mat-form-field>
                 <mat-form-field appearance="fill">
-                    <mat-label>Classe</mat-label>
+                    <mat-label>Class</mat-label>
                     <mat-select [formControl]="aForm_class">
                     <mat-option *ngFor="let aValue of aValues" [value]="aValue">
                         {{aValue}}
@@ -110,35 +109,35 @@
                 </mat-form-field>
                 <mat-form-field class="full-width">
                     <label>Ratings</label>
-                    <input matInput [formControl]="aForm_weight">
+                    <input matInput type="number" [formControl]="aForm_weight">
                 </mat-form-field>     
                 <button class="button" (click)="addARattings()">Adicionar Rattings</button> 
 
-        
+                <mat-table #tableARatings [dataSource]="aRatings">
 
-                <mat-table #table [dataSource]="aRatings">
-
-                    <!--- Note that these columns can be defined in any order.
-                          The actual rendered columns are set as a property on the row definition" -->
-                
-                    <!-- ID Column -->
                     <ng-container matColumnDef="class">
-                      <mat-header-cell *matHeaderCellDef > ID </mat-header-cell>
-                      <mat-cell *matCellDef="let row"> {{row.class}} </mat-cell>
+                      <mat-header-cell *matHeaderCellDef > Class </mat-header-cell>
+                      <mat-cell *matCellDef="let element"> {{element.class}} </mat-cell>
                     </ng-container>
                 
-                    <!-- Progress Column -->
                     <ng-container matColumnDef="value">
-                      <mat-header-cell *matHeaderCellDef > value </mat-header-cell>
-                      <mat-cell *matCellDef="let row"> {{row.value}} </mat-cell>
+                      <mat-header-cell *matHeaderCellDef > Ratings </mat-header-cell>
+                      <mat-cell *matCellDef="let element"> {{element.value}} </mat-cell>
                     </ng-container>
-                
+
+                    <ng-container matColumnDef="options">
+                        <mat-header-cell *matHeaderCellDef > Options </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> 
+                            <button mat-icon-button color="danger" (click)="deleteARatings(element)">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </mat-cell>
+                    </ng-container>
                 
                     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                    <mat-row [@rowsAnimation]="" *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                    <mat-row  *matRowDef="let row; columns: displayedColumns;"></mat-row>
                   </mat-table>
-                  
-                  
+
                 <button class="button" type="submit">OK</button>
             </form>
             <mat-slide-toggle [checked]="visibleALayer" (change)="changeShowALayer($event)">Result</mat-slide-toggle>

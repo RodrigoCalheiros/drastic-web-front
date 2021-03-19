@@ -1,22 +1,18 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import Map from 'ol/Map';
-import View from 'ol/View';
-import VectorLayer from 'ol/layer/Vector';
-import Icon from 'ol/style/Icon';
-import { OSM, Vector as VectorSource } from 'ol/source';
-import * as olProj from 'ol/proj';
-import TileLayer from 'ol/layer/Tile';
-import GeoJSON from 'ol/format/GeoJSON';
-import { Circle as CircleStyle, Fill, Stroke, Style } from 'ol/style';
-import { ScaleLine, defaults as defaultControls } from 'ol/control';
-
-import { DrasticDService } from '../drastic-d.service';
-import TileWMS from 'ol/source/TileWMS';
-import LayerGroup from 'ol/layer/Group';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
-import { MatTable, MatTableDataSource } from '@angular/material/table';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatTable } from '@angular/material/table';
+import { defaults as defaultControls, ScaleLine } from 'ol/control';
+import LayerGroup from 'ol/layer/Group';
+import TileLayer from 'ol/layer/Tile';
+import Map from 'ol/Map';
+import * as olProj from 'ol/proj';
+import { OSM } from 'ol/source';
+import TileWMS from 'ol/source/TileWMS';
+import View from 'ol/View';
+import { DrasticDService } from '../drastic-d.service';
 
 @Component({
   selector: 'app-drastic',
@@ -24,6 +20,8 @@ import { MatTable, MatTableDataSource } from '@angular/material/table';
   styleUrls: ['./drastic.component.css']
 })
 export class DrasticComponent implements OnInit {
+  
+  @ViewChild('tableARatings') table!: MatTable<any>;
 
   layers = ['d', 'r', 'a', 's', 't', 'i', 'c', 'result']
   wmsTyleLayerGroup = new LayerGroup();
@@ -51,6 +49,7 @@ export class DrasticComponent implements OnInit {
   visibleALayer = false;
   aHeaders: String[] = [];
   aValues: String[] = [];
+  
   aRatings: MatTableDataSource<any> = new MatTableDataSource();  
   aForm_header = new FormControl(null);
   aForm_class = new FormControl(null);
@@ -60,7 +59,7 @@ export class DrasticComponent implements OnInit {
     class: this.aForm_class,
     weight: this.aForm_weight
   });
-  displayedColumns: string[] = ['class', 'value'];
+  displayedColumns: string[] = ['class', 'value', 'options'];
 
   
   visibleSLayer = false;
@@ -239,12 +238,12 @@ export class DrasticComponent implements OnInit {
 
 
   calculateA(){
-    // const formData = new FormData();
-    // formData.append('data', JSON.stringify(this.rForm.value));
-    // this.httpClient.post<any>("http://127.0.0.1:5000/drastic/r/calculate",  formData).subscribe(
-    //   (res) => console.log(res),
-    //   (err) => console.log(err)
-    // );
+    const formData = new FormData();
+    formData.append('data', JSON.stringify(this.rForm.value));
+    this.httpClient.post<any>("http://127.0.0.1:5000/drastic/r/calculate",  formData).subscribe(
+      (res) => console.log(res),
+      (err) => console.log(err)
+    );
   }
 
   getHeaderShpA(){
@@ -259,8 +258,8 @@ export class DrasticComponent implements OnInit {
   }
 
   changeHeaderShpA(value: any){
-    console.log(value);
-    this.getValueShpA(value)
+    this.getValueShpA(value);
+    this.clearARattings();
   }
 
   getValueShpA(header: any){
@@ -275,7 +274,8 @@ export class DrasticComponent implements OnInit {
   }
 
   clearARattings(){
-    //this.aRatings = [];
+    console.log("clear")
+    this.aRatings.data = [];
   }
 
   addARattings(){
@@ -283,11 +283,17 @@ export class DrasticComponent implements OnInit {
       class: this.aForm.get('class')?.value,
       value: this.aForm.get('weight')?.value
     };
-    console.log(ratting);
     this.aRatings.data.push(ratting);
-    console.log(this.aRatings.data)
+    this.table.renderRows();
   }
 
- 
+  deleteARatings(rowObj: any){
+    console.log("rowObj", rowObj)
+    this.aRatings.data = this.aRatings.data.filter((value, key) => {
+      console.log("value",value);
+      console.log("key", key)
+      return (value.class != rowObj.class && value.value != rowObj.value);
+    })
+  }
 
 }

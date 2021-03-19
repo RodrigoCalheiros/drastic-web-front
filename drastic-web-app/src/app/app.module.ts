@@ -16,6 +16,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTableModule } from '@angular/material/table';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { MatTableModule } from '@angular/material/table';
     HttpClientModule,
     MatSelectModule,
     MatSlideToggleModule,
-    MatTableModule
+    MatTableModule,
+    MatIconModule
   ],
   providers: [{provide:MatFormFieldControl, useExisting: AppModule}],
   bootstrap: [AppComponent]
