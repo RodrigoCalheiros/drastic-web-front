@@ -23,14 +23,22 @@ export class DrasticComponent implements OnInit {
   
   @ViewChild('tableARatings') table!: MatTable<any>;
 
-  layers = ['d', 'r', 'a', 's', 't', 'i', 'c', 'result']
+  drasticDService!: DrasticDService;
+  map!: Map;
   wmsTyleLayerGroup = new LayerGroup();
+  layers = ['d', 'r', 'a', 's', 't', 'i', 'c', 'result']
 
+  //D
   visibleDLayer = true;
+
   dForm_upload = new FormControl('');
-  uploadForm: FormGroup = this.formBuilder.group({
+  dUploadForm: FormGroup = this.formBuilder.group({
     mdtFile: this.dForm_upload
   });
+
+   //Implementar 
+   dForm_rattings = new FormControl(50);
+
   dForm_maxDepth = new FormControl(20);
   dForm_distance = new FormControl(200);
   dForm_minSize = new FormControl(50);
@@ -40,17 +48,34 @@ export class DrasticComponent implements OnInit {
     minSize: this.dForm_minSize
   });
 
+  //R
   visibleRLayer = false;
+
+  rForm_upload = new FormControl('');
+  rUploadForm: FormGroup = this.formBuilder.group({
+    mdtFile: this.dForm_upload
+  });
+
+  //Implementar 
   rForm_rattings = new FormControl(50);
+
   rForm: FormGroup = this.formBuilder.group({
     rattings: this.rForm_rattings,
   });
 
+  //A
   visibleALayer = false;
+
+  aForm_upload = new FormControl('');
+  aUploadForm: FormGroup = this.formBuilder.group({
+    mdtFile: this.dForm_upload
+  });
+
   aHeaders: String[] = [];
   aValues: String[] = [];
-  
-  aRatings: MatTableDataSource<any> = new MatTableDataSource();  
+  aRatings: MatTableDataSource<any> = new MatTableDataSource();
+  displayedColumns: string[] = ['class', 'value', 'options'];
+
   aForm_header = new FormControl(null);
   aForm_class = new FormControl(null);
   aForm_weight = new FormControl(0);
@@ -59,17 +84,75 @@ export class DrasticComponent implements OnInit {
     class: this.aForm_class,
     weight: this.aForm_weight
   });
-  displayedColumns: string[] = ['class', 'value', 'options'];
-
   
-  visibleSLayer = false;
-  visibleTLayer = false;
-  visibleILayer = false;
-  visibleCLayer = false;
-  visibleResultLayer = false;
 
-  drasticDService!: DrasticDService;
-  map!: Map;
+  //S
+  visibleSLayer = false;
+
+  sForm_upload = new FormControl('');
+  sUploadForm: FormGroup = this.formBuilder.group({
+    mdtFile: this.dForm_upload
+  });
+
+  sHeaders: String[] = [];
+  sValues: String[] = [];
+  sRatings: MatTableDataSource<any> = new MatTableDataSource();  
+  displayedColumnsS: string[] = ['class', 'value', 'options'];
+
+  sForm_header = new FormControl(null);
+  sForm_class = new FormControl(null);
+  sForm_weight = new FormControl(0);
+  sForm: FormGroup = this.formBuilder.group({
+    header: this.aForm_header,
+    class: this.aForm_class,
+    weight: this.aForm_weight
+  });
+  
+  
+  //T
+  visibleTLayer = false;
+
+  tForm_upload = new FormControl('');
+  tUploadForm: FormGroup = this.formBuilder.group({
+    mdtFile: this.dForm_upload
+  });
+
+  tForm: FormGroup = this.formBuilder.group({
+    header: this.aForm_header,
+    class: this.aForm_class,
+    weight: this.aForm_weight
+  });
+
+  //I
+  visibleILayer = false;
+
+  iForm_upload = new FormControl('');
+  iUploadForm: FormGroup = this.formBuilder.group({
+    mdtFile: this.dForm_upload
+  });
+
+  iForm: FormGroup = this.formBuilder.group({
+    header: this.aForm_header,
+    class: this.aForm_class,
+    weight: this.aForm_weight
+  });
+
+  //C
+  visibleCLayer = false;
+
+  cForm_upload = new FormControl('');
+  cUploadForm: FormGroup = this.formBuilder.group({
+    mdtFile: this.dForm_upload
+  });
+
+  cForm: FormGroup = this.formBuilder.group({
+    header: this.aForm_header,
+    class: this.aForm_class,
+    weight: this.aForm_weight
+  });
+
+  //DRASTIC
+  visibleResultLayer = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -191,23 +274,52 @@ export class DrasticComponent implements OnInit {
     });
   }
 
-  onFileSelect(event:any){
+  onFileSelect(event:any, variable: any){
     if (event.target.files.length > 0){
       const file = event.target.files[0];
-      this.dForm_upload.setValue(file);
+      if (variable == 'd'){
+        this.dForm_upload.setValue(file);
+      } else if (variable == 'r'){
+        this.rForm_upload.setValue(file);
+      } else if (variable == 'a'){
+        this.aForm_upload.setValue(file);
+      } else if (variable == 's'){
+        this.sForm_upload.setValue(file);
+      } else if (variable == 't'){
+        this.tForm_upload.setValue(file);
+      } else if (variable == 'i'){
+        this.iForm_upload.setValue(file);
+      } else if (variable == 'c'){
+        this.cForm_upload.setValue(file);
+      }
+      
       //this.uploadForm.get('mdtFile')?.setValue(file);
     }
   }
 
-  uploadFile() {
+  uploadFile(variable: any) {
     const formData = new FormData();
-    formData.append('file', this.uploadForm.get('mdtFile')?.value);
-    let options = {
-      headers: new HttpHeaders().set('Access-Control-Allow-Origin', 'http://127.0.0.1:5000'),
-      file: this.uploadForm.get('mdtFile')?.value
-
+    if (variable == 'd'){
+      formData.append('file', this.dUploadForm.get('mdtFile')?.value);
+    } else if (variable == 'r'){
+      formData.append('file', this.rUploadForm.get('mdtFile')?.value);
+    } else if (variable == 'a'){
+      formData.append('file', this.aUploadForm.get('mdtFile')?.value);
+    } else if (variable == 's'){
+      formData.append('file', this.sUploadForm.get('mdtFile')?.value);
+    } else if (variable == 't'){
+      formData.append('file', this.tUploadForm.get('mdtFile')?.value);
+    } else if (variable == 'i'){
+      formData.append('file', this.iUploadForm.get('mdtFile')?.value);
+    } else if (variable == 'c'){
+      formData.append('file', this.cUploadForm.get('mdtFile')?.value);
     }
-    this.httpClient.post<any>("http://127.0.0.1:5000/drastic/upload", formData).subscribe(
+    
+    //let options = {
+    //  headers: new HttpHeaders().set('Access-Control-Allow-Origin', 'http://127.0.0.1:5000'),
+    //  file: this.uploadForm.get('mdtFile')?.value
+    //}
+    this.httpClient.post<any>("http://127.0.0.1:5000/drastic/upload/" + variable, formData).subscribe(
       (res) => console.log(res),
       (err) => console.log(err)
     );
@@ -239,7 +351,43 @@ export class DrasticComponent implements OnInit {
 
   calculateA(){
     const formData = new FormData();
-    formData.append('data', JSON.stringify(this.rForm.value));
+    formData.append('data', JSON.stringify(this.aForm.value));
+    this.httpClient.post<any>("http://127.0.0.1:5000/drastic/r/calculate",  formData).subscribe(
+      (res) => console.log(res),
+      (err) => console.log(err)
+    );
+  }
+
+  calculateS(){
+    const formData = new FormData();
+    formData.append('data', JSON.stringify(this.sForm.value));
+    this.httpClient.post<any>("http://127.0.0.1:5000/drastic/r/calculate",  formData).subscribe(
+      (res) => console.log(res),
+      (err) => console.log(err)
+    );
+  }
+
+  calculateT(){
+    const formData = new FormData();
+    formData.append('data', JSON.stringify(this.tForm.value));
+    this.httpClient.post<any>("http://127.0.0.1:5000/drastic/r/calculate",  formData).subscribe(
+      (res) => console.log(res),
+      (err) => console.log(err)
+    );
+  }
+
+  calculateI(){
+    const formData = new FormData();
+    formData.append('data', JSON.stringify(this.iForm.value));
+    this.httpClient.post<any>("http://127.0.0.1:5000/drastic/r/calculate",  formData).subscribe(
+      (res) => console.log(res),
+      (err) => console.log(err)
+    );
+  }
+
+  calculateC(){
+    const formData = new FormData();
+    formData.append('data', JSON.stringify(this.cForm.value));
     this.httpClient.post<any>("http://127.0.0.1:5000/drastic/r/calculate",  formData).subscribe(
       (res) => console.log(res),
       (err) => console.log(err)
@@ -260,6 +408,10 @@ export class DrasticComponent implements OnInit {
   changeHeaderShpA(value: any){
     this.getValueShpA(value);
     this.clearARattings();
+  }
+
+  changeHeaderShpS(value: any){
+    //not implemented
   }
 
   getValueShpA(header: any){
@@ -287,6 +439,10 @@ export class DrasticComponent implements OnInit {
     this.table.renderRows();
   }
 
+  addSRattings(){
+    //not implemented
+  }
+
   deleteARatings(rowObj: any){
     console.log("rowObj", rowObj)
     this.aRatings.data = this.aRatings.data.filter((value, key) => {
@@ -294,6 +450,10 @@ export class DrasticComponent implements OnInit {
       console.log("key", key)
       return (value.class != rowObj.class && value.value != rowObj.value);
     })
+  }
+
+  deleteSRatings(rowObj: any){
+    //not implemented
   }
 
 }
