@@ -102,9 +102,9 @@
                 <mat-form-field appearance="fill">
                     <mat-label>Class</mat-label>
                     <mat-select [formControl]="aForm_class">
-                    <mat-option *ngFor="let aValue of aValues" [value]="aValue">
-                        {{aValue}}
-                    </mat-option>
+                        <mat-option *ngFor="let aValue of aValues" [value]="aValue">
+                            {{aValue}}
+                        </mat-option>
                     </mat-select>
                 </mat-form-field>
                 <mat-form-field class="full-width">

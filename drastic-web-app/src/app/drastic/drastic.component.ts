@@ -351,8 +351,8 @@ export class DrasticComponent implements OnInit {
 
   calculateA(){
     const formData = new FormData();
-    formData.append('data', JSON.stringify(this.aForm.value));
-    this.httpClient.post<any>("http://127.0.0.1:5000/drastic/r/calculate",  formData).subscribe(
+    formData.append('data', JSON.stringify({rattings: this.aRatings.data}));
+    this.httpClient.post<any>("http://127.0.0.1:5000/drastic/a/calculate",  formData).subscribe(
       (res) => console.log(res),
       (err) => console.log(err)
     );
@@ -360,8 +360,8 @@ export class DrasticComponent implements OnInit {
 
   calculateS(){
     const formData = new FormData();
-    formData.append('data', JSON.stringify(this.sForm.value));
-    this.httpClient.post<any>("http://127.0.0.1:5000/drastic/r/calculate",  formData).subscribe(
+    formData.append('data', JSON.stringify({rattings: this.sRatings.data}));
+    this.httpClient.post<any>("http://127.0.0.1:5000/drastic/s/calculate",  formData).subscribe(
       (res) => console.log(res),
       (err) => console.log(err)
     );
@@ -370,7 +370,7 @@ export class DrasticComponent implements OnInit {
   calculateT(){
     const formData = new FormData();
     formData.append('data', JSON.stringify(this.tForm.value));
-    this.httpClient.post<any>("http://127.0.0.1:5000/drastic/r/calculate",  formData).subscribe(
+    this.httpClient.post<any>("http://127.0.0.1:5000/drastic/t/calculate",  formData).subscribe(
       (res) => console.log(res),
       (err) => console.log(err)
     );
@@ -379,7 +379,7 @@ export class DrasticComponent implements OnInit {
   calculateI(){
     const formData = new FormData();
     formData.append('data', JSON.stringify(this.iForm.value));
-    this.httpClient.post<any>("http://127.0.0.1:5000/drastic/r/calculate",  formData).subscribe(
+    this.httpClient.post<any>("http://127.0.0.1:5000/drastic/i/calculate",  formData).subscribe(
       (res) => console.log(res),
       (err) => console.log(err)
     );
@@ -388,7 +388,7 @@ export class DrasticComponent implements OnInit {
   calculateC(){
     const formData = new FormData();
     formData.append('data', JSON.stringify(this.cForm.value));
-    this.httpClient.post<any>("http://127.0.0.1:5000/drastic/r/calculate",  formData).subscribe(
+    this.httpClient.post<any>("http://127.0.0.1:5000/drastic/c/calculate",  formData).subscribe(
       (res) => console.log(res),
       (err) => console.log(err)
     );
