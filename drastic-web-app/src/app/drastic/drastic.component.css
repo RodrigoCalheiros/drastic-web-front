@@ -11,6 +11,12 @@
     width: 400px;
     margin: 20px;
 }
+.ol-zoom{
+    bottom: 30px;
+    right: 10px;
+    top: none;
+    left: none;
+}
 
 #form{
     width: 100%;
@@ -33,4 +39,8 @@
 .button{
     margin-top: 3px;
     margin-bottom: 10px;
+}
+
+.spinner{
+    height: 30px;
 }

@@ -17,6 +17,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -38,7 +40,9 @@ import { MatIconModule } from '@angular/material/icon';
     MatSelectModule,
     MatSlideToggleModule,
     MatTableModule,
-    MatIconModule
+    MatIconModule,
+    MatGridListModule,
+    MatProgressSpinnerModule
   ],
   providers: [{provide:MatFormFieldControl, useExisting: AppModule}],
   bootstrap: [AppComponent]

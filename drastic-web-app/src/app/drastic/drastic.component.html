@@ -1,6 +1,7 @@
 <div id="map">
     <button class="rotate-north ol-unselectable ol-control"><span class="material-icons">north</span></button> 
 </div>
+
 <div class="panelIndices">
     <mat-expansion-panel hideToggle>
         <mat-expansion-panel-header>
@@ -38,11 +39,16 @@
                 <mat-form-field class="full-width">
                     <label >Minimum size of watershed basin</label>
                     <input matInput [formControl]="dForm_minSize">
-                </mat-form-field>       
-                <button class="button" type="submit">OK</button>
+                </mat-form-field>      
+                <mat-grid-list cols="3" rowHeight="60px">
+                    <mat-grid-tile><button class="button" type="submit">OK</button></mat-grid-tile>
+                    <mat-grid-tile><mat-spinner class="spinner" *ngIf="dSpinnerVisible" diameter="40"></mat-spinner></mat-grid-tile>
+                    <mat-grid-tile><mat-slide-toggle [checked]="visibleDLayer" (change)="changeShowDLayer($event)">Layer</mat-slide-toggle></mat-grid-tile>
+                </mat-grid-list> 
+                
                 
             </form>
-            <mat-slide-toggle [checked]="visibleDLayer" (change)="changeShowDLayer($event)">Result</mat-slide-toggle>
+            
         </mat-expansion-panel>
 
         <mat-expansion-panel hideToggle>
@@ -88,9 +94,12 @@
                 </div>
                 <button class="button" type="submit">OK</button>
             </form>
+            <button class="button" (click)="getAtributesA()">Get Attributes</button>
             
             <form [formGroup]="aForm" (ngSubmit)="calculateA()">
-
+                
+                
+                
                 <mat-form-field appearance="fill">
                     <mat-label>Attribute</mat-label>
                     <mat-select [formControl]="aForm_header" #attribute (selectionChange)="changeHeaderShpA(attribute.value)">
@@ -111,18 +120,19 @@
                     <label>Ratings</label>
                     <input matInput type="number" [formControl]="aForm_weight">
                 </mat-form-field>     
-                <button class="button" (click)="addARattings()">Adicionar Rattings</button> 
+                <button class="button" (click)="addARattings()">Add Rattings</button> 
+                
 
                 <mat-table #tableARatings [dataSource]="aRatings">
 
                     <ng-container matColumnDef="class">
-                      <mat-header-cell *matHeaderCellDef > Class </mat-header-cell>
-                      <mat-cell *matCellDef="let element"> {{element.class}} </mat-cell>
+                    <mat-header-cell *matHeaderCellDef > Class </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.class}} </mat-cell>
                     </ng-container>
                 
                     <ng-container matColumnDef="value">
-                      <mat-header-cell *matHeaderCellDef > Ratings </mat-header-cell>
-                      <mat-cell *matCellDef="let element"> {{element.value}} </mat-cell>
+                    <mat-header-cell *matHeaderCellDef > Ratings </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.value}} </mat-cell>
                     </ng-container>
 
                     <ng-container matColumnDef="options">
@@ -136,11 +146,19 @@
                 
                     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                     <mat-row  *matRowDef="let row; columns: displayedColumns;"></mat-row>
-                  </mat-table>
-
-                <button class="button" type="submit">OK</button>
+                </mat-table>
+                <mat-grid-list cols="3" rowHeight="60px">
+                    <mat-grid-tile><button class="button" type="submit">Ok</button></mat-grid-tile>
+                    <mat-grid-tile><mat-spinner class="spinner" *ngIf="aSpinnerVisible" diameter="40"></mat-spinner></mat-grid-tile>
+                    <mat-grid-tile><mat-slide-toggle [checked]="visibleALayer"  (change)="changeShowALayer($event)">Result</mat-slide-toggle></mat-grid-tile>
+                </mat-grid-list> 
+                
+                
+                    
+               
+                
             </form>
-            <mat-slide-toggle [checked]="visibleALayer" (change)="changeShowALayer($event)">Result</mat-slide-toggle>
+            
         </mat-expansion-panel>
 
         <mat-expansion-panel hideToggle>

@@ -47,6 +47,7 @@ export class DrasticComponent implements OnInit {
     distance: this.dForm_distance,
     minSize: this.dForm_minSize
   });
+  dSpinnerVisible = false;
 
   //R
   visibleRLayer = false;
@@ -65,10 +66,10 @@ export class DrasticComponent implements OnInit {
 
   //A
   visibleALayer = false;
-
+  aSpinnerVisible = false;
   aForm_upload = new FormControl('');
   aUploadForm: FormGroup = this.formBuilder.group({
-    mdtFile: this.dForm_upload
+    mdtFile: this.aForm_upload
   });
 
   aHeaders: String[] = [];
@@ -162,7 +163,6 @@ export class DrasticComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadMap();
-    this.getHeaderShpA();
   }
 
   loadMap(){
@@ -297,6 +297,10 @@ export class DrasticComponent implements OnInit {
     }
   }
 
+  getAtributesA(){
+    this.getHeaderShpA();
+  }
+
   uploadFile(variable: any) {
     const formData = new FormData();
     if (variable == 'd'){
@@ -320,8 +324,28 @@ export class DrasticComponent implements OnInit {
     //  file: this.uploadForm.get('mdtFile')?.value
     //}
     this.httpClient.post<any>("http://127.0.0.1:5000/drastic/upload/" + variable, formData).subscribe(
-      (res) => console.log(res),
-      (err) => console.log(err)
+      (res) => {
+        console.log(res);
+      },
+      (err) => {
+        console.log(err);
+        alert("Upload realizado com sucesso!");
+        if (variable == 'd'){
+          this.dUploadForm.get('mdtFile')?.setValue(null);
+        } else if (variable == 'r'){
+          this.rUploadForm.get('mdtFile')?.setValue(null);
+        } else if (variable == 'a'){
+          this.aUploadForm.get('mdtFile')?.setValue(null);
+        } else if (variable == 's'){
+          this.sUploadForm.get('mdtFile')?.setValue(null);
+        } else if (variable == 't'){
+          this.tUploadForm.get('mdtFile')?.setValue(null);
+        } else if (variable == 'i'){
+          this.iUploadForm.get('mdtFile')?.setValue(null);
+        } else if (variable == 'c'){
+          this.cUploadForm.get('mdtFile')?.setValue(null);
+        }
+      }
     );
   }
 
@@ -329,13 +353,18 @@ export class DrasticComponent implements OnInit {
     const formData = new FormData();
     formData.append('data', JSON.stringify(this.dForm.value));
     console.log(formData.get("data"));
+    this.dSpinnerVisible= true;
     this.httpClient.post<any>("http://127.0.0.1:5000/drastic/d/calculate", formData).subscribe(
       (res) =>{
-        console.log(res)
+        console.log(res);
+        this.dSpinnerVisible= false;
+      },
+      (err) =>{
+        this.dSpinnerVisible= false;
+        alert("Fator D calculado com sucesso.");
         this.visibleDLayer = true;
         this.changeVisibleLayersWMS("d", true);
-      },
-      (err) => console.log(err)
+      }
     );
   }
 
@@ -348,13 +377,22 @@ export class DrasticComponent implements OnInit {
     );
   }
 
-
   calculateA(){
     const formData = new FormData();
     formData.append('data', JSON.stringify({rattings: this.aRatings.data}));
+    this.aSpinnerVisible= true;
     this.httpClient.post<any>("http://127.0.0.1:5000/drastic/a/calculate",  formData).subscribe(
-      (res) => console.log(res),
-      (err) => console.log(err)
+
+      (res) =>{
+        console.log(res);
+        this.aSpinnerVisible= false;
+      },
+      (err) =>{
+        this.aSpinnerVisible= false;
+        alert("Fator A calculado com sucesso.");
+        this.visibleALayer = true;
+        this.changeVisibleLayersWMS("a", true);
+      }
     );
   }
 
