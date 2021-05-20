@@ -19,11 +19,13 @@ import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { DrasticDComponent } from './drastic/d/drastic-d.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    DrasticComponent
+    DrasticComponent,
+    DrasticDComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,91 @@
+<mat-expansion-panel hideToggle>
+    <mat-expansion-panel-header>
+        <mat-panel-title>
+        D
+        </mat-panel-title>
+        <mat-panel-description>
+            Depth to Groundwather
+        </mat-panel-description>
+    </mat-expansion-panel-header>
+    <form [formGroup]="uploadForm" (ngSubmit)="uploadFile()">
+        <div class="full-width">
+            <label>MDT File</label>
+            <input type="file"  (change)="onFileSelect($event)">
+        </div>
+        <button class="button" type="submit">OK</button>
+    </form>
+    
+    <form [formGroup]="form" (ngSubmit)="calculateD()">
+        <mat-form-field class="full-width">
+            <label>Maximum depth</label>
+            <input matInput type="number" [formControl]="formControlMaxDepth">
+        </mat-form-field>
+        <mat-form-field class="full-width">
+            <label>Distance</label>
+            <input matInput type="number" [formControl]="formControlDistance">
+        </mat-form-field>
+        <mat-form-field class="full-width">
+            <label >Minimum size of watershed basin</label>
+            <input matInput type="number" [formControl]="formControlMinSize">
+        </mat-form-field>   
+
+        <mat-form-field class="full-width">
+            <label>Depth Min(m)</label>
+            <input matInput type="number" [formControl]="formControlRatingDepthMin">
+        </mat-form-field>
+        <mat-form-field class="full-width">
+            <label>Depth Max(m)</label>
+            <input matInput type="number" [formControl]="formControlRatingDepthMax">
+        </mat-form-field>
+        <mat-form-field class="full-width">
+            <label>Rating</label>
+            <input matInput type="number" [formControl]="formControlRating">
+        </mat-form-field>
+         
+        <button class="button" (click)="addRating()">Add</button> 
+        
+
+        <table mat-table #tableRatings  [dataSource]="dataSource" class="mat-elevation-z8">
+
+            <ng-container matColumnDef="depthMin">
+                <th mat-header-cell *matHeaderCellDef > Depth Min </th>
+                <td mat-cell *matCellDef="let element"> {{element.depthMin}} </td>
+            </ng-container>
+        
+            <ng-container matColumnDef="depthMax">
+                <th mat-header-cell *matHeaderCellDef > Depth Max </th>
+                <td mat-cell *matCellDef="let element"> {{element.depthMax}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="rating">
+                <th mat-header-cell *matHeaderCellDef > Rating </th>
+                <td mat-cell *matCellDef="let element"> {{element.value}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="options">
+                <th mat-header-cell *matHeaderCellDef > Options </th>
+                <td mat-cell *matCellDef="let element"> 
+                    <button mat-icon-button color="danger" (click)="deleteRating(element)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </td>
+            </ng-container>
+        
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row  *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+
+           
+        <mat-grid-list cols="1" rowHeight="60px">
+            <mat-grid-tile><button class="button" type="submit">Calculate</button></mat-grid-tile>
+            <!-- <mat-grid-tile><mat-spinner class="spinner" *ngIf="dSpinnerVisible" diameter="40"></mat-spinner></mat-grid-tile>
+            <mat-grid-tile><mat-slide-toggle [checked]="visibleDLayer" (change)="changeShowDLayer($event)">Layer</mat-slide-toggle></mat-grid-tile> -->
+        </mat-grid-list> 
+        
+        
+    </form>
+    
+</mat-expansion-panel>
+
+       

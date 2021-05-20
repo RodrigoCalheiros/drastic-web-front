@@ -353,6 +353,7 @@ export class DrasticComponent implements OnInit {
     const formData = new FormData();
     formData.append('data', JSON.stringify(this.dForm.value));
     console.log(formData.get("data"));
+    console.log(formData);
     this.dSpinnerVisible= true;
     this.httpClient.post<any>("http://127.0.0.1:5000/drastic/d/calculate", formData).subscribe(
       (res) =>{

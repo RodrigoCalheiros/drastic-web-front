@@ -126,5 +126,8 @@
       }
     }
   },
-  "defaultProject": "drastic-web-app"
+  "defaultProject": "drastic-web-app",
+  "cli": {
+    "analytics": "e9d0f29a-3620-4e19-8fe6-6eccae058fae"
+  }
 }
