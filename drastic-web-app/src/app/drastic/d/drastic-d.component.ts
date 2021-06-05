@@ -1,18 +1,7 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { MatSlideToggleChange } from '@angular/material/slide-toggle';
-import { MatTableDataSource } from '@angular/material/table';
 import { MatTable } from '@angular/material/table';
-import { defaults as defaultControls, ScaleLine } from 'ol/control';
-import LayerGroup from 'ol/layer/Group';
-import TileLayer from 'ol/layer/Tile';
-import Map from 'ol/Map';
-import * as olProj from 'ol/proj';
-import { OSM } from 'ol/source';
-import TileWMS from 'ol/source/TileWMS';
-import View from 'ol/View';
-import { DrasticDService } from '../../drastic-d.service';
+import { DrasticDService } from 'src/app/drastic-d.service';
 
 export interface Rating {
   depthMin: number,
@@ -27,7 +16,7 @@ const RATINGS: Rating[] = [
   {depthMin: 9.1, depthMax: 15.2, value: 5.0},
   {depthMin: 15.2, depthMax: 22.9, value: 3.0},
   {depthMin: 22.9, depthMax: 30.5, value: 2.0},
-  {depthMin: 30.5, depthMax: 200, value: 1.0},
+  {depthMin: 30.5, depthMax: 200, value: 1.0}  
 ];
 
 @Component({
@@ -54,6 +43,7 @@ export class DrasticDComponent implements OnInit {
     maxDepth: this.formControlMaxDepth,
     distance: this.formControlDistance,
     minSize: this.formControlMinSize,
+    ratings: null,
     ratingDepthMin: this.formControlRatingDepthMin,
     ratingDepthMax: this.formControlRatingDepthMax,
     rating: this.formControlRating
@@ -61,14 +51,16 @@ export class DrasticDComponent implements OnInit {
 
   displayedColumns: string[] = ['depthMin', 'depthMax', 'rating', 'options'];
   dataSource = RATINGS;
+  dataSourceSort: Rating[] = [] as Rating[];
 
   constructor(
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private drasticDService: DrasticDService
   ){
   }
 
   ngOnInit(): void {
-    
+    this.sortRating();
   }
 
   addRating(){
@@ -78,6 +70,7 @@ export class DrasticDComponent implements OnInit {
       value: this.form.get('rating')?.value
     };
     this.dataSource.push(rating);
+    this.sortRating();
     this.table.renderRows();
   }
 
@@ -85,11 +78,25 @@ export class DrasticDComponent implements OnInit {
     this.dataSource = this.dataSource.filter((value, key) => {
       return (value != element);
     })
+    this.sortRating();
+  }
+
+  ratingsToList(){
+    let ratingList:number[] = [];
+    this.dataSource.forEach(rating => {
+      ratingList.push(rating.depthMin);
+      ratingList.push(rating.depthMax);
+      ratingList.push(rating.value);
+    })
+    return ratingList;
   }
 
 
   calculateD(){
-    console.log("calculate D")
+    this.form.patchValue({ratings: this.ratingsToList()});
+    const formData = new FormData();
+    formData.append('data', JSON.stringify(this.form.value));
+    this.drasticDService.calculate(formData);
   }
 
   uploadFile(){
@@ -98,6 +105,21 @@ export class DrasticDComponent implements OnInit {
 
   onFileSelect(event: any){
 
+  }
+
+  sortRating(){
+    this.dataSourceSort = this.dataSource.sort((rating1: Rating, rating2:Rating) => {
+      if (rating1.depthMin > rating2.depthMin) {
+        return 1;
+      }
+
+      if (rating1.depthMin < rating2.depthMin) {
+        return -1;
+      }
+
+      return 0;
+
+    })
   }
 
 }

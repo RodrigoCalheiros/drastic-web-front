@@ -20,6 +20,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { DrasticDComponent } from './drastic/d/drastic-d.component';
+import {MatDividerModule} from '@angular/material/divider';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { DrasticDComponent } from './drastic/d/drastic-d.component';
     MatTableModule,
     MatIconModule,
     MatGridListModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatDividerModule
   ],
   providers: [{provide:MatFormFieldControl, useExisting: AppModule}],
   bootstrap: [AppComponent]

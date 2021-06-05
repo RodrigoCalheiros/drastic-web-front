@@ -27,7 +27,7 @@
         <mat-form-field class="full-width">
             <label >Minimum size of watershed basin</label>
             <input matInput type="number" [formControl]="formControlMinSize">
-        </mat-form-field>   
+        </mat-form-field>  
 
         <mat-form-field class="full-width">
             <label>Depth Min(m)</label>
@@ -45,7 +45,7 @@
         <button class="button" (click)="addRating()">Add</button> 
         
 
-        <table mat-table #tableRatings  [dataSource]="dataSource" class="mat-elevation-z8">
+        <table mat-table #tableRatings  [dataSource]="dataSourceSort" class="mat-elevation-z8">
 
             <ng-container matColumnDef="depthMin">
                 <th mat-header-cell *matHeaderCellDef > Depth Min </th>
