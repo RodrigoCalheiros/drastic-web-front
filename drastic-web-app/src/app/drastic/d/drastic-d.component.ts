@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatTable } from '@angular/material/table';
-import { DrasticDService } from 'src/app/drastic-d.service';
+import { DrasticDService } from 'src/app/service/drastic-d.service';
 
 export interface Rating {
   depthMin: number,
@@ -112,13 +112,10 @@ export class DrasticDComponent implements OnInit {
       if (rating1.depthMin > rating2.depthMin) {
         return 1;
       }
-
       if (rating1.depthMin < rating2.depthMin) {
         return -1;
       }
-
       return 0;
-
     })
   }
 

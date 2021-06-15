@@ -21,12 +21,14 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { DrasticDComponent } from './drastic/d/drastic-d.component';
 import {MatDividerModule} from '@angular/material/divider';
+import { FileUploadComponent } from './file-upload/file-upload.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     DrasticComponent,
-    DrasticDComponent
+    DrasticDComponent,
+    FileUploadComponent
   ],
   imports: [
     BrowserModule,

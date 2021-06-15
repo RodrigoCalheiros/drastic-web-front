@@ -7,13 +7,10 @@
             Depth to Groundwather
         </mat-panel-description>
     </mat-expansion-panel-header>
-    <form [formGroup]="uploadForm" (ngSubmit)="uploadFile()">
-        <div class="full-width">
-            <label>MDT File</label>
-            <input type="file"  (change)="onFileSelect($event)">
-        </div>
-        <button class="button" type="submit">OK</button>
-    </form>
+   
+    <app-file-upload algoritm="drastic" variable="d"></app-file-upload>
+
+    <mat-divider class="divider"></mat-divider>
     
     <form [formGroup]="form" (ngSubmit)="calculateD()">
         <mat-form-field class="full-width">
@@ -42,7 +39,12 @@
             <input matInput type="number" [formControl]="formControlRating">
         </mat-form-field>
          
-        <button class="button" (click)="addRating()">Add</button> 
+        
+
+        <mat-grid-list cols="2" rowHeight="60px">
+            <mat-grid-tile><button mat-stroked-button color="accent" class="button" (click)="addRating()">Add Rating</button></mat-grid-tile>
+            <mat-grid-tile><button mat-stroked-button color="primary" class="button" type="submit">Calculate</button></mat-grid-tile>
+        </mat-grid-list> 
         
 
         <table mat-table #tableRatings  [dataSource]="dataSourceSort" class="mat-elevation-z8">
@@ -74,15 +76,6 @@
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row  *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
-
-
-           
-        <mat-grid-list cols="1" rowHeight="60px">
-            <mat-grid-tile><button class="button" type="submit">Calculate</button></mat-grid-tile>
-            <!-- <mat-grid-tile><mat-spinner class="spinner" *ngIf="dSpinnerVisible" diameter="40"></mat-spinner></mat-grid-tile>
-            <mat-grid-tile><mat-slide-toggle [checked]="visibleDLayer" (change)="changeShowDLayer($event)">Layer</mat-slide-toggle></mat-grid-tile> -->
-        </mat-grid-list> 
-        
         
     </form>
     

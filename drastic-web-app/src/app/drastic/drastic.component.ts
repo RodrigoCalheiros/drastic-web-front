@@ -12,7 +12,7 @@ import * as olProj from 'ol/proj';
 import { OSM } from 'ol/source';
 import TileWMS from 'ol/source/TileWMS';
 import View from 'ol/View';
-import { DrasticDService } from '../drastic-d.service';
+import { DrasticDService } from '../service/drastic-d.service';
 
 @Component({
   selector: 'app-drastic',
