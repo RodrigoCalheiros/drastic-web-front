@@ -19,6 +19,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatTabsModule } from '@angular/material/tabs';
 import { DrasticDComponent } from './drastic/d/drastic-d.component';
 import {MatDividerModule} from '@angular/material/divider';
 import { FileUploadComponent } from './file-upload/file-upload.component';
@@ -48,7 +49,9 @@ import { FileUploadComponent } from './file-upload/file-upload.component';
     MatIconModule,
     MatGridListModule,
     MatProgressSpinnerModule,
-    MatDividerModule
+    MatDividerModule,
+    MatTabsModule
+    
   ],
   providers: [{provide:MatFormFieldControl, useExisting: AppModule}],
   bootstrap: [AppComponent]

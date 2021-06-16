@@ -155,6 +155,8 @@ export class DrasticComponent implements OnInit {
   //DRASTIC
   visibleResultLayer = false;
 
+  // parser:SLDParser = new SLDParser();
+
   constructor(
     private formBuilder: FormBuilder,
     private httpClient: HttpClient
@@ -163,13 +165,25 @@ export class DrasticComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadMap();
+  
+    // var sldString = '<?xml version="1.0" encoding="UTF-8"?><sld:StyledLayerDescriptor xmlns="http://www.opengis.net/sld" xmlns:sld="http://www.opengis.net/sld" xmlns:gml="http://www.opengis.net/gml" xmlns:ogc="http://www.opengis.net/ogc" version="1.0.0"> <sld:NamedLayer> <sld:Name>Default Styler</sld:Name> <sld:UserStyle> <sld:Name>Default Styler</sld:Name> <sld:Title>Gravel_Program_2016</sld:Title> <sld:FeatureTypeStyle> <sld:Name>name</sld:Name> <sld:Rule> <sld:MinScaleDenominator>1.0</sld:MinScaleDenominator> <sld:MaxScaleDenominator>1.0E7</sld:MaxScaleDenominator> <sld:LineSymbolizer> <sld:Stroke> <sld:CssParameter name="stroke">#8000FF</sld:CssParameter> <sld:CssParameter name="stroke-width">3.000</sld:CssParameter> </sld:Stroke> </sld:LineSymbolizer> </sld:Rule> </sld:FeatureTypeStyle> </sld:UserStyle> </sld:NamedLayer> </sld:StyledLayerDescriptor>';
+
+    // this.parser.readStyle(sldString).then(styleObject => {
+    //   console.log(styleObject);
+    // }).catch(error => {
+    //   console.log(error);
+    // });
   }
+
+
 
   loadMap(){
     let wmsTyleLayers: any[] = [];
     let visible: boolean;
     this.layers.forEach(layer =>{
-      
+
+      const sld = '<?xml version="1.0" encoding="UTF-8"?><StyledLayerDescriptor version="1.1.0"xmlns="http://www.opengis.net/sld"xmlns:se="http://www.opengis.net/se"xmlns:ogc="http://www.opengis.net/ogc"xmlns:xlink="http://www.w3.org/1999/xlink"xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"xsi:schemaLocation="http://www.opengis.net/sldhttp://schemas.opengis.net/sld/1.1.0/StyledLayerDescriptor.xsd"><NamedLayer><se:Name>d</se:Name><UserStyle><se:Name>xxx</se:Name><se:FeatureTypeStyle><se:Rule><se:RasterSymbolizer><se:ChannelSelection><se:GrayChannel><se:SourceChannelName>1</se:SourceChannelName></se:GrayChannel></se:ChannelSelection><se:ColorMap type="ramp"><se:ColorMapEntry color="#d7191c" quantity="0" label="0"/><se:ColorMapEntry color="#fdae61" quantity="0.75" label="0.75"/><se:ColorMapEntry color="#ffffbf" quantity="1.5" label="1.5"/><se:ColorMapEntry color="#abdda4" quantity="2.25" label="2.25"/><se:ColorMapEntry color="#2b83ba" quantity="3" label="3"/></se:ColorMap></se:RasterSymbolizer></se:Rule></se:FeatureTypeStyle></UserStyle></NamedLayer></StyledLayerDescriptor>'
+      const sld2 = '<?xml version="1.0" encoding="UTF-8"?><StyledLayerDescriptor version="1.1.0" xsi:schemaLocation="http://www.opengis.net/sld http://schemas.opengis.net/sld/1.1.0/StyledLayerDescriptor.xsd" xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:se="http://www.opengis.net/se" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><NamedLayer><se:Name>d</se:Name><UserStyle><se:FeatureTypeStyle><se:Rule><se:Name>Bq m3</se:Name><ogc:Filter><ogc:PropertyIsEqualTo><ogc:PropertyName>AM_GFRn</ogc:PropertyName><ogc:Literal></ogc:Literal></ogc:PropertyIsEqualTo></ogc:Filter><se:MinScaleDenominator>250000.000000</se:MinScaleDenominator><se:PolygonSymbolizer><se:Fill><se:SvgParameter name="fill">#ffffff</se:SvgParameter></se:Fill></se:PolygonSymbolizer></se:Rule><se:Rule><se:Name>&gt; 499.99</se:Name><ogc:Filter><ogc:PropertyIsEqualTo><ogc:PropertyName>AM_GFRn</ogc:PropertyName><ogc:Literal>>499.99</ogc:Literal></ogc:PropertyIsEqualTo></ogc:Filter><se:MinScaleDenominator>250000.000000</se:MinScaleDenominator><se:PolygonSymbolizer><se:Fill><se:SvgParameter name="fill">#ff0000</se:SvgParameter></se:Fill></se:PolygonSymbolizer></se:Rule><se:Rule><se:Name>200 - 499.99</se:Name><ogc:Filter><ogc:PropertyIsEqualTo><ogc:PropertyName>AM_GFRn</ogc:PropertyName><ogc:Literal>1 - 2</ogc:Literal></ogc:PropertyIsEqualTo></ogc:Filter><se:MinScaleDenominator>250000.000000</se:MinScaleDenominator><se:PolygonSymbolizer><se:Fill><se:SvgParameter name="fill">#e69800</se:SvgParameter></se:Fill></se:PolygonSymbolizer></se:Rule><se:Rule><se:Name>100 - 199.99</se:Name><ogc:Filter><ogc:PropertyIsEqualTo><ogc:PropertyName>AM_GFRn</ogc:PropertyName><ogc:Literal>0 - 1</ogc:Literal></ogc:PropertyIsEqualTo></ogc:Filter><se:MinScaleDenominator>250000.000000</se:MinScaleDenominator><se:PolygonSymbolizer><se:Fill><se:SvgParameter name="fill">#ffff00</se:SvgParameter></se:Fill></se:PolygonSymbolizer></se:Rule><se:Rule><se:Name>50 - 99.99</se:Name><ogc:Filter><ogc:PropertyIsEqualTo><ogc:PropertyName>AM_GFRn</ogc:PropertyName><ogc:Literal>50 - 99.99</ogc:Literal></ogc:PropertyIsEqualTo></ogc:Filter><se:MinScaleDenominator>250000.000000</se:MinScaleDenominator><se:PolygonSymbolizer><se:Fill><se:SvgParameter name="fill">#bed2ff</se:SvgParameter></se:Fill></se:PolygonSymbolizer></se:Rule><se:Rule><se:Name>20 - 49.99</se:Name><ogc:Filter><ogc:PropertyIsEqualTo><ogc:PropertyName>AM_GFRn</ogc:PropertyName><ogc:Literal>20 - 49.99</ogc:Literal></ogc:PropertyIsEqualTo></ogc:Filter><se:MinScaleDenominator>250000.000000</se:MinScaleDenominator><se:PolygonSymbolizer><se:Fill><se:SvgParameter name="fill">#0070ff</se:SvgParameter></se:Fill></se:PolygonSymbolizer></se:Rule><se:Rule><se:Name>&lt; 20</se:Name><ogc:Filter><ogc:PropertyIsEqualTo><ogc:PropertyName>AM_GFRn</ogc:PropertyName><ogc:Literal>&lt; 20</ogc:Literal></ogc:PropertyIsEqualTo></ogc:Filter><se:MinScaleDenominator>250000.000000</se:MinScaleDenominator><se:PolygonSymbolizer><se:Fill><se:SvgParameter name="fill">#004da8</se:SvgParameter></se:Fill></se:PolygonSymbolizer></se:Rule></se:FeatureTypeStyle></UserStyle></NamedLayer></StyledLayerDescriptor>'
       if (layer =='d'){
         visible = this.visibleDLayer
       }else{
@@ -184,7 +198,8 @@ export class DrasticComponent implements OnInit {
             'srs': 'EPSG:3857',
             'LAYERS': layer, 
             'TILED': true, 
-            'MAP':'/var/www/mapserv/drastic2.map'
+            'MAP':'/var/www/mapserv/drastic2.map',
+            'SLD_BODY':sld
           },
           serverType: 'mapserver',
           crossOrigin: "anonymous"

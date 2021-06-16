@@ -23,6 +23,8 @@
     "@angular/router": "~11.0.1",
     "@types/ol": "^6.4.2",
     "angular-material-fileupload": "^3.0.1",
+    "geostyler": "^7.0.1",
+    "geostyler-sld-parser": "^2.3.0",
     "ol": "^6.4.3",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",

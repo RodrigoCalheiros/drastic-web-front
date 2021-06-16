@@ -13,6 +13,19 @@
     bottom: 0px;
     overflow: auto;
 }
+
+.panelIndicesTab{
+    position: absolute;
+    float: left;
+    top: 0px;
+    right: 0px;
+    width: 400px;
+    margin: 20px;
+    bottom: 0px;
+    overflow: auto;
+    background-color: white;
+}
+
 .ol-zoom{
     bottom: 30px;
     right: 10px;
