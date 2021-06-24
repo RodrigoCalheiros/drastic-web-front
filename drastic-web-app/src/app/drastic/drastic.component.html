@@ -4,10 +4,14 @@
 
 <mat-tab-group class="panelIndicesTab" color="accent" >
     <mat-tab label="DRASTIC">
-        <app-drastic-d></app-drastic-d>
     </mat-tab>
     <mat-tab label="GOD"> Content 2 </mat-tab>
     <mat-tab label="SI"> Content 3 </mat-tab>
+    <mat-tab label="Symbology"> 
+        <ng-container *ngFor="let layer of layers">
+            <app-symbology *ngIf="layer.statistics" [layer]="layer" (symbologyLayer)="applySymbology($event)"></app-symbology>
+        </ng-container>
+    </mat-tab>
 </mat-tab-group>
 
 <div class="panelIndices">
@@ -21,7 +25,7 @@
             </mat-panel-title>
         </mat-expansion-panel-header>
 
-        <app-drastic-d></app-drastic-d>
+        <app-drastic-d (renderLayer)="renderLayer($event)"></app-drastic-d>
 
         <mat-expansion-panel hideToggle>
             <mat-expansion-panel-header>

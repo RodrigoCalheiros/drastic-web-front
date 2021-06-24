@@ -1,0 +1,54 @@
+<h3>{{ layer.description }}</h3>
+<form [formGroup]="form" (ngSubmit)="applySymbology()">
+    <mat-form-field class="full-width">
+        <label>Min</label>
+        <input matInput type="number" [formControl]="formControlMin">
+    </mat-form-field>
+    <mat-form-field class="full-width">
+        <label>Max</label>
+        <input matInput type="number" [formControl]="formControlMax">
+    </mat-form-field>
+    <mat-form-field class="full-width">
+        <label >Color</label>
+        <input matInput type="text" [formControl]="formControlColor">
+    </mat-form-field>  
+     
+    <mat-grid-list cols="2" rowHeight="60px">
+        <mat-grid-tile><button mat-stroked-button color="accent" class="button" type="button" (click)="addElement()">Add Symbology</button></mat-grid-tile>
+        <mat-grid-tile><button mat-stroked-button color="primary" class="button" type="submit">Apply Symbology</button></mat-grid-tile>
+    </mat-grid-list> 
+    
+
+    <table mat-table #tableRatings  [dataSource]="dataSourceSort" class="mat-elevation-z8">
+
+        <ng-container matColumnDef="min">
+            <th mat-header-cell *matHeaderCellDef > Min </th>
+            <td mat-cell *matCellDef="let element"> {{element.min}} </td>
+        </ng-container>
+    
+        <ng-container matColumnDef="max">
+            <th mat-header-cell *matHeaderCellDef > Max </th>
+            <td mat-cell *matCellDef="let element"> {{element.max}} </td>
+        </ng-container>
+    
+        <ng-container matColumnDef="color">
+            <th mat-header-cell *matHeaderCellDef > Color </th>
+            <td mat-cell *matCellDef="let element"> {{element.color}} </td>
+        </ng-container>
+    
+        <ng-container matColumnDef="options">
+            <th mat-header-cell *matHeaderCellDef > Options </th>
+            <td mat-cell *matCellDef="let element"> 
+                <button mat-icon-button color="danger" (click)="deleteElement(element)">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </td>
+        </ng-container>
+    
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row  *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    
+</form>
+
+       

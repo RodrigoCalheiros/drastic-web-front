@@ -12,6 +12,7 @@ import * as olProj from 'ol/proj';
 import { OSM } from 'ol/source';
 import TileWMS from 'ol/source/TileWMS';
 import View from 'ol/View';
+import { Layer } from '../model/layer.model';
 import { DrasticDService } from '../service/drastic-d.service';
 
 @Component({
@@ -26,7 +27,48 @@ export class DrasticComponent implements OnInit {
   drasticDService!: DrasticDService;
   map!: Map;
   wmsTyleLayerGroup = new LayerGroup();
-  layers = ['d', 'r', 'a', 's', 't', 'i', 'c', 'result']
+
+  layers: Layer[] = [];
+
+  layer_drastic_d = {
+    name: 'd',
+    visible: false
+  } as Layer;
+
+  layer_drastic_r = {
+    name: 'r',
+    visible: false
+  } as Layer;
+
+  layer_drastic_a = {
+    name: 'a',
+    visible: false
+  } as Layer;
+
+  layer_drastic_s = {
+    name: 's',
+    visible: false
+  } as Layer;
+
+  layer_drastic_t = {
+    name: 't',
+    visible: false
+  } as Layer;
+
+  layer_drastic_i = {
+    name: 'i',
+    visible: false
+  } as Layer;
+
+  layer_drastic_c = {
+    name: 'c',
+    visible: false
+  } as Layer;
+
+  layer_drastic_result = {
+    name: 'result',
+    visible: false
+  } as Layer;
 
   //D
   visibleDLayer = true;
@@ -164,15 +206,15 @@ export class DrasticComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.layers.push(this.layer_drastic_d);
+    this.layers.push(this.layer_drastic_r);
+    this.layers.push(this.layer_drastic_a);
+    this.layers.push(this.layer_drastic_s);
+    this.layers.push(this.layer_drastic_t);
+    this.layers.push(this.layer_drastic_i);
+    this.layers.push(this.layer_drastic_c);
+    this.layers.push(this.layer_drastic_result);
     this.loadMap();
-  
-    // var sldString = '<?xml version="1.0" encoding="UTF-8"?><sld:StyledLayerDescriptor xmlns="http://www.opengis.net/sld" xmlns:sld="http://www.opengis.net/sld" xmlns:gml="http://www.opengis.net/gml" xmlns:ogc="http://www.opengis.net/ogc" version="1.0.0"> <sld:NamedLayer> <sld:Name>Default Styler</sld:Name> <sld:UserStyle> <sld:Name>Default Styler</sld:Name> <sld:Title>Gravel_Program_2016</sld:Title> <sld:FeatureTypeStyle> <sld:Name>name</sld:Name> <sld:Rule> <sld:MinScaleDenominator>1.0</sld:MinScaleDenominator> <sld:MaxScaleDenominator>1.0E7</sld:MaxScaleDenominator> <sld:LineSymbolizer> <sld:Stroke> <sld:CssParameter name="stroke">#8000FF</sld:CssParameter> <sld:CssParameter name="stroke-width">3.000</sld:CssParameter> </sld:Stroke> </sld:LineSymbolizer> </sld:Rule> </sld:FeatureTypeStyle> </sld:UserStyle> </sld:NamedLayer> </sld:StyledLayerDescriptor>';
-
-    // this.parser.readStyle(sldString).then(styleObject => {
-    //   console.log(styleObject);
-    // }).catch(error => {
-    //   console.log(error);
-    // });
   }
 
 
@@ -183,29 +225,21 @@ export class DrasticComponent implements OnInit {
     this.layers.forEach(layer =>{
 
       const sld = '<?xml version="1.0" encoding="UTF-8"?><StyledLayerDescriptor version="1.1.0"xmlns="http://www.opengis.net/sld"xmlns:se="http://www.opengis.net/se"xmlns:ogc="http://www.opengis.net/ogc"xmlns:xlink="http://www.w3.org/1999/xlink"xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"xsi:schemaLocation="http://www.opengis.net/sldhttp://schemas.opengis.net/sld/1.1.0/StyledLayerDescriptor.xsd"><NamedLayer><se:Name>d</se:Name><UserStyle><se:Name>xxx</se:Name><se:FeatureTypeStyle><se:Rule><se:RasterSymbolizer><se:ChannelSelection><se:GrayChannel><se:SourceChannelName>1</se:SourceChannelName></se:GrayChannel></se:ChannelSelection><se:ColorMap type="ramp"><se:ColorMapEntry color="#d7191c" quantity="0" label="0"/><se:ColorMapEntry color="#fdae61" quantity="0.75" label="0.75"/><se:ColorMapEntry color="#ffffbf" quantity="1.5" label="1.5"/><se:ColorMapEntry color="#abdda4" quantity="2.25" label="2.25"/><se:ColorMapEntry color="#2b83ba" quantity="3" label="3"/></se:ColorMap></se:RasterSymbolizer></se:Rule></se:FeatureTypeStyle></UserStyle></NamedLayer></StyledLayerDescriptor>'
-      const sld2 = '<?xml version="1.0" encoding="UTF-8"?><StyledLayerDescriptor version="1.1.0" xsi:schemaLocation="http://www.opengis.net/sld http://schemas.opengis.net/sld/1.1.0/StyledLayerDescriptor.xsd" xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:se="http://www.opengis.net/se" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><NamedLayer><se:Name>d</se:Name><UserStyle><se:FeatureTypeStyle><se:Rule><se:Name>Bq m3</se:Name><ogc:Filter><ogc:PropertyIsEqualTo><ogc:PropertyName>AM_GFRn</ogc:PropertyName><ogc:Literal></ogc:Literal></ogc:PropertyIsEqualTo></ogc:Filter><se:MinScaleDenominator>250000.000000</se:MinScaleDenominator><se:PolygonSymbolizer><se:Fill><se:SvgParameter name="fill">#ffffff</se:SvgParameter></se:Fill></se:PolygonSymbolizer></se:Rule><se:Rule><se:Name>&gt; 499.99</se:Name><ogc:Filter><ogc:PropertyIsEqualTo><ogc:PropertyName>AM_GFRn</ogc:PropertyName><ogc:Literal>>499.99</ogc:Literal></ogc:PropertyIsEqualTo></ogc:Filter><se:MinScaleDenominator>250000.000000</se:MinScaleDenominator><se:PolygonSymbolizer><se:Fill><se:SvgParameter name="fill">#ff0000</se:SvgParameter></se:Fill></se:PolygonSymbolizer></se:Rule><se:Rule><se:Name>200 - 499.99</se:Name><ogc:Filter><ogc:PropertyIsEqualTo><ogc:PropertyName>AM_GFRn</ogc:PropertyName><ogc:Literal>1 - 2</ogc:Literal></ogc:PropertyIsEqualTo></ogc:Filter><se:MinScaleDenominator>250000.000000</se:MinScaleDenominator><se:PolygonSymbolizer><se:Fill><se:SvgParameter name="fill">#e69800</se:SvgParameter></se:Fill></se:PolygonSymbolizer></se:Rule><se:Rule><se:Name>100 - 199.99</se:Name><ogc:Filter><ogc:PropertyIsEqualTo><ogc:PropertyName>AM_GFRn</ogc:PropertyName><ogc:Literal>0 - 1</ogc:Literal></ogc:PropertyIsEqualTo></ogc:Filter><se:MinScaleDenominator>250000.000000</se:MinScaleDenominator><se:PolygonSymbolizer><se:Fill><se:SvgParameter name="fill">#ffff00</se:SvgParameter></se:Fill></se:PolygonSymbolizer></se:Rule><se:Rule><se:Name>50 - 99.99</se:Name><ogc:Filter><ogc:PropertyIsEqualTo><ogc:PropertyName>AM_GFRn</ogc:PropertyName><ogc:Literal>50 - 99.99</ogc:Literal></ogc:PropertyIsEqualTo></ogc:Filter><se:MinScaleDenominator>250000.000000</se:MinScaleDenominator><se:PolygonSymbolizer><se:Fill><se:SvgParameter name="fill">#bed2ff</se:SvgParameter></se:Fill></se:PolygonSymbolizer></se:Rule><se:Rule><se:Name>20 - 49.99</se:Name><ogc:Filter><ogc:PropertyIsEqualTo><ogc:PropertyName>AM_GFRn</ogc:PropertyName><ogc:Literal>20 - 49.99</ogc:Literal></ogc:PropertyIsEqualTo></ogc:Filter><se:MinScaleDenominator>250000.000000</se:MinScaleDenominator><se:PolygonSymbolizer><se:Fill><se:SvgParameter name="fill">#0070ff</se:SvgParameter></se:Fill></se:PolygonSymbolizer></se:Rule><se:Rule><se:Name>&lt; 20</se:Name><ogc:Filter><ogc:PropertyIsEqualTo><ogc:PropertyName>AM_GFRn</ogc:PropertyName><ogc:Literal>&lt; 20</ogc:Literal></ogc:PropertyIsEqualTo></ogc:Filter><se:MinScaleDenominator>250000.000000</se:MinScaleDenominator><se:PolygonSymbolizer><se:Fill><se:SvgParameter name="fill">#004da8</se:SvgParameter></se:Fill></se:PolygonSymbolizer></se:Rule></se:FeatureTypeStyle></UserStyle></NamedLayer></StyledLayerDescriptor>'
-      if (layer =='d'){
-        visible = this.visibleDLayer
-      }else{
-        visible = false;
+      if (layer.name == 'd'){
+        layer.visible = true;
       }
+      
       let tileLayer = new TileLayer({
-        visible: visible,
+        visible: layer.visible,
         zIndex: 10,
         source: new TileWMS({
           url: 'http://localhost/cgi-bin/mapserv',
-          params: {
-            'srs': 'EPSG:3857',
-            'LAYERS': layer, 
-            'TILED': true, 
-            'MAP':'/var/www/mapserv/drastic2.map',
-            'SLD_BODY':sld
-          },
+          params: this.getParamsTileWMS(layer.name, layer.sld? layer.sld: ''),
           serverType: 'mapserver',
           crossOrigin: "anonymous"
         }),
       }) 
-      tileLayer.set("name", layer);
+      tileLayer.set("name", layer.name);
       wmsTyleLayers.push(tileLayer)
     })
 
@@ -231,58 +265,73 @@ export class DrasticComponent implements OnInit {
     });
   }
 
+  getParamsTileWMS(layerName: string, sld: string){
+    return {
+      'srs': 'EPSG:3857',
+      'LAYERS': layerName, 
+      'TILED': true, 
+      'MAP':'/var/www/mapserv/drastic2.map',
+      'SLD_BODY': sld
+    }
+  }
   changeShowDLayer(event: MatSlideToggleChange){
     console.log(event);
     this.visibleDLayer = event.checked;
-    this.changeVisibleLayersWMS("d", event.checked)
+   // this.changeVisibleLayersWMS("d", event.checked)
   }
 
   changeShowRLayer(event: MatSlideToggleChange){
     console.log(event);
     this.visibleRLayer = event.checked;
-    this.changeVisibleLayersWMS("r", event.checked)
+   // this.changeVisibleLayersWMS("r", event.checked)
   }
 
   changeShowALayer(event: MatSlideToggleChange){
     console.log(event);
     this.visibleALayer = event.checked;
-    this.changeVisibleLayersWMS("a", event.checked)
+   // this.changeVisibleLayersWMS("a", event.checked)
   }
 
   changeShowSLayer(event: MatSlideToggleChange){
     console.log(event);
     this.visibleSLayer = event.checked;
-    this.changeVisibleLayersWMS("s", event.checked)
+   // this.changeVisibleLayersWMS("s", event.checked)
   }
 
   changeShowTLayer(event: MatSlideToggleChange){
     console.log(event);
     this.visibleTLayer = event.checked;
-    this.changeVisibleLayersWMS("t", event.checked)
+   // this.changeVisibleLayersWMS("t", event.checked)
   }
 
   changeShowILayer(event: MatSlideToggleChange){
     console.log(event);
     this.visibleILayer = event.checked;
-    this.changeVisibleLayersWMS("i", event.checked)
+   // this.changeVisibleLayersWMS("i", event.checked)
   }
   
   changeShowCLayer(event: MatSlideToggleChange){
     console.log(event);
     this.visibleCLayer = event.checked;
-    this.changeVisibleLayersWMS("c", event.checked)
+    //this.changeVisibleLayersWMS("c", event.checked)
   }
 
   changeShowResultLayer(event: MatSlideToggleChange){
     console.log(event);
     this.visibleResultLayer = event.checked;
-    this.changeVisibleLayersWMS("result", event.checked)
+    //this.changeVisibleLayersWMS("result", event.checked)
   }
 
-  changeVisibleLayersWMS(layer: any, visible:boolean){
+  changeVisibleLayersWMS(layer: Layer){
     this.wmsTyleLayerGroup.getLayersArray().forEach(tileLayer => {
-      if (tileLayer.get("name") == layer){
-        tileLayer.setVisible(visible);
+      if (tileLayer.get("name") == layer.name){
+        tileLayer.setSource(new TileWMS({
+          url: 'http://localhost/cgi-bin/mapserv',
+          params: this.getParamsTileWMS(layer.name, layer.sld? layer.sld: ''),
+          serverType: 'mapserver',
+          crossOrigin: "anonymous"
+        }));
+        tileLayer.setVisible(layer.visible? true: false);
       }else{
         tileLayer.setVisible(false);
       }
@@ -379,7 +428,7 @@ export class DrasticComponent implements OnInit {
         this.dSpinnerVisible= false;
         alert("Fator D calculado com sucesso.");
         this.visibleDLayer = true;
-        this.changeVisibleLayersWMS("d", true);
+       // this.changeVisibleLayersWMS("d", true);
       }
     );
   }
@@ -407,7 +456,7 @@ export class DrasticComponent implements OnInit {
         this.aSpinnerVisible= false;
         alert("Fator A calculado com sucesso.");
         this.visibleALayer = true;
-        this.changeVisibleLayersWMS("a", true);
+       // this.changeVisibleLayersWMS("a", true);
       }
     );
   }
@@ -508,6 +557,19 @@ export class DrasticComponent implements OnInit {
 
   deleteSRatings(rowObj: any){
     //not implemented
+  }
+
+  renderLayer(layer: Layer){
+    let layerFilter = this.layers.filter(layerFilter => layerFilter.name == layer.name)[0];
+    layerFilter.statistics = layer.statistics;
+  }
+
+  applySymbology(layer: Layer){
+    this.changeVisibleLayersWMS(layer);
+    // let layerFilter = this.layers.filter(layerFilter => layerFilter.name == layer.name)[0];
+    // layerFilter.sld = layer.sld;
+    // layerFilter.visible = layer.visible;
+    // console.log("symbology", layer)
   }
 
 }

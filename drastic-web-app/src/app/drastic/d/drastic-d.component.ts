@@ -1,13 +1,15 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatTable } from '@angular/material/table';
-import { DrasticDService } from 'src/app/service/drastic-d.service';
 
-export interface Rating {
-  depthMin: number,
-  depthMax: number,
-  value: number
-}
+import { DrasticDService } from 'src/app/service/drastic-d.service';
+import { RasterService } from 'src/app/service/raster.service';
+import { ListService } from 'src/app/service/list.service';
+
+import { Rating } from 'src/app/model/rating.model';
+import { Statistics } from 'src/app/model/statistics.model';
+import { Layer } from 'src/app/model/layer.model';
+import { Response } from 'src/app/model/response.model';
 
 const RATINGS: Rating[] = [
   {depthMin: 0.0, depthMax: 1.5, value: 10},
@@ -27,6 +29,7 @@ const RATINGS: Rating[] = [
 export class DrasticDComponent implements OnInit {
 
   @ViewChild('tableRatings') table!: MatTable<any>;
+  @Output() renderLayer = new EventEmitter<Layer>();
   
   fileFormControl= new FormControl('');
   uploadForm: FormGroup = this.formBuilder.group({
@@ -55,12 +58,14 @@ export class DrasticDComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private drasticDService: DrasticDService
+    private drasticDService: DrasticDService,
+    private rasterService: RasterService,
+    private listService: ListService
   ){
   }
 
   ngOnInit(): void {
-    this.sortRating();
+    this.dataSourceSort = this.listService.orderList(this.dataSource, "depthMin");
   }
 
   addRating(){
@@ -70,7 +75,7 @@ export class DrasticDComponent implements OnInit {
       value: this.form.get('rating')?.value
     };
     this.dataSource.push(rating);
-    this.sortRating();
+    this.dataSourceSort = this.listService.orderList(this.dataSource, "depthMin");;
     this.table.renderRows();
   }
 
@@ -78,7 +83,7 @@ export class DrasticDComponent implements OnInit {
     this.dataSource = this.dataSource.filter((value, key) => {
       return (value != element);
     })
-    this.sortRating();
+    this.dataSourceSort = this.listService.orderList(this.dataSource, "depthMin");
   }
 
   ratingsToList(){
@@ -96,7 +101,12 @@ export class DrasticDComponent implements OnInit {
     this.form.patchValue({ratings: this.ratingsToList()});
     const formData = new FormData();
     formData.append('data', JSON.stringify(this.form.value));
-    this.drasticDService.calculate(formData);
+    this.drasticDService.calculate(formData).then(res => {
+      this.rasterService.getStatistics("drastic", "d").then(res => {
+        this.renderLayer.emit({name:'d', statistics: res} as Layer);
+      });
+    });
+    
   }
 
   uploadFile(){
@@ -105,18 +115,6 @@ export class DrasticDComponent implements OnInit {
 
   onFileSelect(event: any){
 
-  }
-
-  sortRating(){
-    this.dataSourceSort = this.dataSource.sort((rating1: Rating, rating2:Rating) => {
-      if (rating1.depthMin > rating2.depthMin) {
-        return 1;
-      }
-      if (rating1.depthMin < rating2.depthMin) {
-        return -1;
-      }
-      return 0;
-    })
   }
 
 }
